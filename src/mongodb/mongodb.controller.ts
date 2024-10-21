@@ -22,7 +22,7 @@ export class MongoDBController {
 
   // Create a document in a specific collection
   @Post('find/:collectionName')
-  async getDocuments(
+  async findDocuments(
     @Param('collectionName') collectionName: string,
     @Body() payload: any,
   ) {

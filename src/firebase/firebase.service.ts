@@ -34,7 +34,7 @@ export class FirebaseService {
   }
 
   // Method to get data from a Firestore collection
-  async getDocument(collection: string, documentId: string): Promise<any> {
+  async findDocument(collection: string, documentId: string): Promise<any> {
     const doc = await admin
       .firestore()
       .collection(collection)

@@ -35,7 +35,7 @@ describe('MongodbController', () => {
     const mockResponse = [{ name: 'Groceries' }];
     (service.findDocuments as jest.Mock).mockResolvedValue(mockResponse);
 
-    const result = await controller.getDocuments('categories', {});
+    const result = await controller.findDocuments('categories', {});
     expect(result).toEqual({ message: 'Document found successfully', result: mockResponse });
     expect(service.findDocuments).toHaveBeenCalledWith('categories', {});
   });

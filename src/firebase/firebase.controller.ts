@@ -23,9 +23,36 @@ export class FirebaseController {
       databaseURL: string;
     },
   ) {
-    this.firebaseService.connectToDatabase(firebaseConfig);
-    return { message: 'Connected to Firebase successfully' };
+    try{
+        this.firebaseService.connectToDatabase(firebaseConfig);
+        return { message: 'Connected to Firebase successfully' };
+    }
+    catch(ex) {
+        return{ message: "Connected to Firebase Failed. ERROR: " + ex.message};
+    }
+    
   }
+
+  @Get('find/:collection/:id')
+  async findDocument(
+    @Param('collection') collection: string,
+    @Param('id') documentId: string
+  ) {
+    try {
+    console.log('Collection:', collection); // Log for debugging
+    console.log('Document ID:', documentId); // Log for debugging
+    
+    const result = await this.firebaseService.findDocument(collection, documentId);
+    if (!result) {
+        return { message: 'Document not found', result };
+    }
+    return { message: 'Document set successfully', result };
+    } catch (error) {
+        return { message: 'Error finding document. ERROR : ' + error}; // Log the error for debugging
+    }
+  }
+
+  
 
   @Post('set/:collection/:id')
   async setDocument(
@@ -37,5 +64,4 @@ export class FirebaseController {
     return { message: 'Document set successfully' };
   }
 
-  // Other CRUD methods (getDocument, updateDocument, deleteDocument) go here...
 }
