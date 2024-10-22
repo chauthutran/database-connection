@@ -6,12 +6,15 @@ import express from 'express';
 async function bootstrap() {
   const server = express();
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+  // Enable CORS if needed (optional)
+  app.enableCors(); 
+
   await app.init();
 
   // Ensure the server listens on the port
   const PORT = process.env.PORT || 3000; // Define your desired port
   server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running`);
   });
 }
 
