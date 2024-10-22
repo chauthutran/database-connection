@@ -34,6 +34,16 @@ export class FirebaseService {
   }
 
   // Method to get data from a Firestore collection
+  async findDocuments(collection: string): Promise<any> {
+    const result = await admin
+      .firestore()
+      .collection(collection)
+      .get();
+    // return doc.exists ? doc.data() : null;
+    return result.docs.map(doc => doc.data());
+  }
+
+  // Method to get data from a Firestore collection
   async findDocument(collection: string, documentId: string): Promise<any> {
     const doc = await admin
       .firestore()
@@ -51,6 +61,7 @@ export class FirebaseService {
   ): Promise<any> {
     return admin.firestore().collection(collection).doc(documentId).set(data);
   }
+  
   // Method to update data in a Firestore collection
   async updateDocument(
     collection: string,

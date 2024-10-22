@@ -33,15 +33,27 @@ export class FirebaseController {
     
   }
 
+  @Get('finds/:collection')
+  async findDocuments(
+    @Param('collection') collection: string
+  ) {
+    try {
+    const result = await this.firebaseService.findDocuments(collection);
+    if (!result) {
+        return { message: 'Document not found', result };
+    }
+    return { message: 'Document found successfully', result };
+    } catch (error) {
+        return { message: 'Error finding document. ERROR : ' + error}; // Log the error for debugging
+    }
+  }
+  
   @Get('find/:collection/:id')
   async findDocument(
     @Param('collection') collection: string,
     @Param('id') documentId: string
   ) {
     try {
-    console.log('Collection:', collection); // Log for debugging
-    console.log('Document ID:', documentId); // Log for debugging
-    
     const result = await this.firebaseService.findDocument(collection, documentId);
     if (!result) {
         return { message: 'Document not found', result };
@@ -62,6 +74,20 @@ export class FirebaseController {
   ) {
     await this.firebaseService.setDocument(collection, documentId, data);
     return { message: 'Document set successfully' };
+  }
+
+  // Route to update a task by ID
+  @Put(':id')
+  async updateTask(@Param('id') taskId: string, @Body() task: any) {
+    await this.firebaseService.updateDocument('tasks', taskId, task);
+    return { message: 'Task updated successfully' };
+  }
+
+  // Route to delete a task by ID
+  @Delete(':id')
+  async deleteTask(@Param('id') taskId: string) {
+    await this.firebaseService.deleteDocument('tasks', taskId);
+    return { message: 'Task deleted successfully' };
   }
 
 }
