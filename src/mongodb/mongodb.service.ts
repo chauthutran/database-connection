@@ -15,7 +15,7 @@ import { Connection, connect, Model, Schema, model, models } from 'mongoose';
  */
 @Injectable()
 export class MongoDBService {
-  private connection: Connection;
+  private connection!: Connection;
 
   // Method to create a dynamilc connection
   async connectToDatabase(
