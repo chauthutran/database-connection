@@ -33,16 +33,15 @@ export class FirebaseController {
     
   }
 
-  @Get('finds/:collection')
+  @Post('finds/:collection')
   async findDocuments(
-    @Param('collection') collection: string
+    @Param('collection') collection: string,
+    @Body() body: { filters: any[], orderByField?: string, orderDirection?: 'asc' | 'desc', limit?: number },
   ) {
     try {
-    const result = await this.firebaseService.findDocuments(collection);
-    if (!result) {
-        return { message: 'Document not found', result };
-    }
-    return { message: 'Document found successfully', result };
+      const { filters, orderByField, orderDirection, limit } = body;
+      const result = await this.firebaseService.findDocuments(collection, filters, orderByField, orderDirection, limit);
+      return { message: 'Documents found successfully', result };
     } catch (error) {
         return { message: 'Error finding document. ERROR : ' + error}; // Log the error for debugging
     }

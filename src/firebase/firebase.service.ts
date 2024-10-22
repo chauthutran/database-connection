@@ -34,12 +34,31 @@ export class FirebaseService {
   }
 
   // Method to get data from a Firestore collection
-  async findDocuments(collection: string): Promise<any> {
-    const result = await admin
-      .firestore()
-      .collection(collection)
-      .get();
-    // return doc.exists ? doc.data() : null;
+  async findDocuments(
+    collection: string,
+    filters: { field: string; operator: FirebaseFirestore.WhereFilterOp; value: any }[],
+    orderByField?: string,
+    orderDirection: 'asc' | 'desc' = 'asc',
+    limit?: number,
+  ): Promise<any> {
+    let query: FirebaseFirestore.Query = admin.firestore().collection(collection);
+
+     // Apply filters dynamically
+    filters.forEach(filter => {
+      query = query.where(filter.field, filter.operator, filter.value);
+    });
+
+    // Apply ordering if provided
+    if (orderByField) {
+      query = query.orderBy(orderByField, orderDirection);
+    }
+
+    // Apply limit if provided
+    if (limit) {
+      query = query.limit(limit);
+    }
+
+    const result = await query.get();
     return result.docs.map(doc => doc.data());
   }
 

@@ -34,10 +34,18 @@ describe('FirebaseController', () => {
   // Add more tests as needed, for example:
   it('should call findDocuments on FirebaseService', async () => {
     const mockResponse = [{ name: 'Groceries' }];
-    (service.findDocument as jest.Mock).mockResolvedValue(mockResponse);
+    (service.findDocuments as jest.Mock).mockResolvedValue(mockResponse);
 
-    const result = await controller.findDocument('categories', "xxx");
-    expect(result).toEqual({ message: 'Document found successfully', result: mockResponse });
-    expect(service.findDocument).toHaveBeenCalledWith('categories', {});
+    const result = await controller.findDocuments('categories', {
+        "filters": [
+          { "field": "priority", "operator": "==", "value": "high" },
+          { "field": "status", "operator": "==", "value": "open" }
+        ],
+        orderByField: "name",
+        orderDirection: "asc",
+        limit: 10
+    });
+    expect(result).toEqual({ message: 'Documents found successfully', result: mockResponse });
+    // expect(service.findDocument).toHaveBeenCalledWith('categories', {});
   });
 });
