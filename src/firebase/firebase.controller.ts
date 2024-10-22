@@ -27,7 +27,7 @@ export class FirebaseController {
         this.firebaseService.connectToDatabase(firebaseConfig);
         return { message: 'Connected to Firebase successfully' };
     }
-    catch(ex) {
+    catch(ex: any) {
         return{ message: "Connected to Firebase Failed. ERROR: " + ex.message};
     }
     
