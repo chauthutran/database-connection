@@ -33,7 +33,7 @@ export class FirebaseController {
     
   }
 
-  @Post('finds/:collection')
+  @Post('findMany/:collection')
   async findDocuments(
     @Param('collection') collection: string,
     @Body() body: { filters: any[], orderByField?: string, orderDirection?: 'asc' | 'desc', limit?: number },
@@ -47,7 +47,7 @@ export class FirebaseController {
     }
   }
   
-  @Get('find/:collection/:id')
+  @Get('findOne/:collection/:id')
   async findDocument(
     @Param('collection') collection: string,
     @Param('id') documentId: string
